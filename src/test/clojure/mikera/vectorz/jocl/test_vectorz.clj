@@ -5,17 +5,23 @@
   ;; (:require [criterium.core :as c])
   )
 
-(defn rmatrix [m n]
+(defn joclmatrix [m n]
   (mikera.vectorz.jocl.JoclMatrix/newMatrix (int m) (int n)))
+
+(defn joclvector [m]
+  (mikera.vectorz.jocl.JoclVector/createLength (int m)))
+
 
 (set-current-implementation :vectorz)
 
 (deftest test-joclmatrix-instance
-  (compl/instance-test (rmatrix 3 3)))
+  (compl/instance-test (joclmatrix 3 3)))
 
+(deftest test-joclvector-instance
+  (compl/instance-test (joclvector 4)))
 
 (deftest compliance-test
-  (compl/compliance-test (rmatrix 3 3)))
+  (compl/compliance-test (joclmatrix 3 3)))
 
 (comment 
   (let [size 3
