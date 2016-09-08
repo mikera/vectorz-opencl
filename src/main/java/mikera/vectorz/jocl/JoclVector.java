@@ -372,6 +372,7 @@ public class JoclVector extends ADenseJoclVector {
 		return dotProduct(0,v,0,n);
 	}
 		
+	private static final long[] SINGLE_ELEMENT_WORK_SIZE2 = new long[]{1,1};
 	double dotProduct(int thisOffset,ADenseJoclVector v, int vOffset, int length) {
 		KernelFunction kernel=Kernels.getKernel("dotProduct");
 		double[] res=new double[1];
@@ -384,7 +385,7 @@ public class JoclVector extends ADenseJoclVector {
 		clSetKernelArg(kernel.getKernel(), 6, Sizeof.cl_int, Pointer.to(new int[]{1})); // stride
 		clSetKernelArg(kernel.getKernel(), 7, Sizeof.cl_int, Pointer.to(new int[]{length})); // row step
 		clEnqueueNDRangeKernel(JoclContext.commandQueue(), kernel.getKernel(), 1, null,
-				SINGLE_ELEMENT_WORK_SIZE, null, 0, null, null);	
+				SINGLE_ELEMENT_WORK_SIZE2, null, 0, null, null);	
 		
 		return res[0];
 	}

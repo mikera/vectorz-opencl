@@ -59,8 +59,9 @@ dotProduct(__global double *res, __global const double *a, __global const double
 {
 	double acc=0.0;
 	int row=get_global_id(0);
+	int col=get_global_id(1);
 	for(int i = 0; i < n; i++) {
-		acc+=a[aoffset+i+row*step]*b[boffset+i*stride];
+		acc+=a[aoffset+i+row*step]*b[boffset+col+i*stride];
 	}
-	res[row]=acc;
+	res[row*n+col]=acc;
 }
