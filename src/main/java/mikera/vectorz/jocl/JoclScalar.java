@@ -1,6 +1,7 @@
 package mikera.vectorz.jocl;
 
 import mikera.vectorz.AScalar;
+import mikera.vectorz.AVector;
 
 public class JoclScalar extends AScalar {
 	private static final long serialVersionUID = 6370756521551217245L;
@@ -45,5 +46,10 @@ public class JoclScalar extends AScalar {
 		return new JoclScalar(JoclVector.create(data, offset, 1),0);
 	}
 
+	@Override
+	public AVector asVector() {
+		if ((offset==0)&&(data.length()==1)) return data;
+		return data.subVector(offset, 1);
+	}
 
 }

@@ -20,6 +20,10 @@
 (deftest test-joclvector-instance
   (compl/instance-test (joclvector 4)))
 
+(deftest test-joclsubvector-instance
+  (let [src (joclvector 4)]
+    (compl/instance-test (subvector src 1 2))))
+
 (deftest compliance-test
   (compl/compliance-test (joclmatrix 3 3)))
 
