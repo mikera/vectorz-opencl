@@ -3,6 +3,7 @@ Experimental OpenCL support for Vectorz
 Uses Jocl as an interface to OpenCL
 
 Initial tests suggest very high overhead on Jocl calls (on the order of 5000ns for typical operations)
+Overhead seems to be due to marshalling of paramaters plus general latency of GPU commands
 This suggests that the implementation should not be recommended for work with small arrays, where
 pure-JVM vectorz is likely to perform much better
 

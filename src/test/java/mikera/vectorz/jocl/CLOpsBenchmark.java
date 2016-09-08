@@ -27,7 +27,7 @@ public class CLOpsBenchmark extends SimpleBenchmark {
 	int DIM_SIZE=256;
 
 	public void timeGetKernel(int runs) {
-		Kernel k=Kernels.getKernel("add");;
+		KernelFunction k=Kernels.getKernel("add");;
 		for (int i=0; i<runs; i++) {
 			k=Kernels.getKernel("add");
 		}
@@ -35,7 +35,7 @@ public class CLOpsBenchmark extends SimpleBenchmark {
 	}
 	
 	public void timeSetKernelArg(int runs) {
-		Kernel k=Kernels.getKernel("add");
+		KernelFunction k=Kernels.getKernel("add");
 		JoclVector v=JoclVector.createLength(10);
 		for (int i=0; i<runs; i++) {
 			CL.clSetKernelArg(k.getKernel(), 0, Sizeof.cl_mem, v.pointer());

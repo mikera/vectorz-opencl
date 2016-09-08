@@ -53,8 +53,8 @@ public class KernelOp extends Op {
 	 * Gets a new kernel instance for this operator
 	 * @return
 	 */
-	public Kernel getKernel() {
-		return new Kernel(program,function);
+	public KernelFunction getKernel() {
+		return new KernelFunction(program,function);
 	}
 	
 	

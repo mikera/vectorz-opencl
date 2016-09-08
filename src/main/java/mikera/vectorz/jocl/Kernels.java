@@ -3,8 +3,8 @@ package mikera.vectorz.jocl;
 public class Kernels {
 	private static final Program program;
 	
-	public static Kernel getKernel(String kernelName) {
-		return new Kernel(program,kernelName);
+	public static KernelFunction getKernel(String kernelName) {
+		return new KernelFunction(program,kernelName);
 	}
 
 	static {	

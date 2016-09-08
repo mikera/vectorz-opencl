@@ -5,10 +5,10 @@ import static org.jocl.CL.clReleaseKernel;
 
 import org.jocl.cl_kernel;
 
-public class Kernel {
+public class KernelFunction {
 	private final cl_kernel kernel;
 	
-	public Kernel(Program program, String name) {
+	public KernelFunction(Program program, String name) {
 		this.kernel=clCreateKernel(program.program, name, null);
 	}
 
