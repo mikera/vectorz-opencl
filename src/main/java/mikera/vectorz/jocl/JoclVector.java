@@ -281,37 +281,37 @@ public class JoclVector extends ADenseJoclVector {
 	}
 	
 	private void applyKernel(Kernel kernel,int offset, ADenseJoclVector src,int srcOffset, int length) {
-		clSetKernelArg(kernel.kernel, 0, Sizeof.cl_mem, pointer()); // target
-		clSetKernelArg(kernel.kernel, 1, Sizeof.cl_mem, src.getData().pointer()); // source
-		clSetKernelArg(kernel.kernel, 2, Sizeof.cl_int, Pointer.to(new int[]{offset})); // source
-		clSetKernelArg(kernel.kernel, 3, Sizeof.cl_int, Pointer.to(new int[]{srcOffset+src.getDataOffset()})); // source
+		clSetKernelArg(kernel.getKernel(), 0, Sizeof.cl_mem, pointer()); // target
+		clSetKernelArg(kernel.getKernel(), 1, Sizeof.cl_mem, src.getData().pointer()); // source
+		clSetKernelArg(kernel.getKernel(), 2, Sizeof.cl_int, Pointer.to(new int[]{offset})); // source
+		clSetKernelArg(kernel.getKernel(), 3, Sizeof.cl_int, Pointer.to(new int[]{srcOffset+src.getDataOffset()})); // source
 		
 		long global_work_size[] = new long[]{length};
         
-		clEnqueueNDRangeKernel(JoclContext.commandQueue(), kernel.kernel, 1, null,
+		clEnqueueNDRangeKernel(JoclContext.commandQueue(), kernel.getKernel(), 1, null,
 				global_work_size, null, 0, null, null);		
 	}
 	
 	private void applyKernel(Kernel kernel,int offset, int length, double a, double b) {
-		clSetKernelArg(kernel.kernel, 0, Sizeof.cl_mem, pointer()); // target
-		clSetKernelArg(kernel.kernel, 1, Sizeof.cl_int, Pointer.to(new int[]{offset})); // offset
-		clSetKernelArg(kernel.kernel, 2, Sizeof.cl_double, Pointer.to(new double[]{a})); 
-		clSetKernelArg(kernel.kernel, 3, Sizeof.cl_double, Pointer.to(new double[]{b}));
+		clSetKernelArg(kernel.getKernel(), 0, Sizeof.cl_mem, pointer()); // target
+		clSetKernelArg(kernel.getKernel(), 1, Sizeof.cl_int, Pointer.to(new int[]{offset})); // offset
+		clSetKernelArg(kernel.getKernel(), 2, Sizeof.cl_double, Pointer.to(new double[]{a})); 
+		clSetKernelArg(kernel.getKernel(), 3, Sizeof.cl_double, Pointer.to(new double[]{b}));
 		
 		long global_work_size[] = new long[]{length};
         
-		clEnqueueNDRangeKernel(JoclContext.commandQueue(), kernel.kernel, 1, null,
+		clEnqueueNDRangeKernel(JoclContext.commandQueue(), kernel.getKernel(), 1, null,
 				global_work_size, null, 0, null, null);		
 	}
 	
 	private static final long[] SINGLE_ELEMENT_WORK_SIZE = new long[]{1};
 	
 	private void applyKernel(Kernel kernel,int offset, double a) {
-		clSetKernelArg(kernel.kernel, 0, Sizeof.cl_mem, pointer()); // target
-		clSetKernelArg(kernel.kernel, 1, Sizeof.cl_int, Pointer.to(new int[]{offset})); // offset
-		clSetKernelArg(kernel.kernel, 2, Sizeof.cl_double, Pointer.to(new double[]{a})); 
+		clSetKernelArg(kernel.getKernel(), 0, Sizeof.cl_mem, pointer()); // target
+		clSetKernelArg(kernel.getKernel(), 1, Sizeof.cl_int, Pointer.to(new int[]{offset})); // offset
+		clSetKernelArg(kernel.getKernel(), 2, Sizeof.cl_double, Pointer.to(new double[]{a})); 
 		
-		clEnqueueNDRangeKernel(JoclContext.commandQueue(), kernel.kernel, 1, null,
+		clEnqueueNDRangeKernel(JoclContext.commandQueue(), kernel.getKernel(), 1, null,
 				SINGLE_ELEMENT_WORK_SIZE, null, 0, null, null);		
 	}
 	
@@ -319,10 +319,10 @@ public class JoclVector extends ADenseJoclVector {
 	public void applyOp(KernelOp op, int start, int length) {
 		checkRange(start,length);
 		Kernel kernel=op.getKernel();
-		clSetKernelArg(kernel.kernel, 0, Sizeof.cl_mem, pointer()); // target
-		clSetKernelArg(kernel.kernel, 1, Sizeof.cl_int, Pointer.to(new int[]{start})); // offset
+		clSetKernelArg(kernel.getKernel(), 0, Sizeof.cl_mem, pointer()); // target
+		clSetKernelArg(kernel.getKernel(), 1, Sizeof.cl_int, Pointer.to(new int[]{start})); // offset
 		long global_work_size[] = new long[]{length};
-		clEnqueueNDRangeKernel(JoclContext.commandQueue(), kernel.kernel, 1, null,
+		clEnqueueNDRangeKernel(JoclContext.commandQueue(), kernel.getKernel(), 1, null,
 				global_work_size, null, 0, null, null);	
 	}
 
@@ -343,15 +343,15 @@ public class JoclVector extends ADenseJoclVector {
 	double scaleAdd(int thisOffset,double factor, ADenseJoclVector v, int vOffset, double vFactor, double constant, int length) {
 		Kernel kernel=Kernels.getKernel("scaleAdd_vector");
 		double[] res=new double[1];
-		clSetKernelArg(kernel.kernel, 0, Sizeof.cl_mem, pointer()); // this
-		clSetKernelArg(kernel.kernel, 1, Sizeof.cl_int, Pointer.to(new int[]{thisOffset})); // this offset
-		clSetKernelArg(kernel.kernel, 2, Sizeof.cl_double, Pointer.to(new double[]{factor})); // this factor
-		clSetKernelArg(kernel.kernel, 3, Sizeof.cl_mem, v.getData().pointer()); // source
-		clSetKernelArg(kernel.kernel, 4, Sizeof.cl_int, Pointer.to(new int[]{vOffset+v.getDataOffset()})); // voffset
-		clSetKernelArg(kernel.kernel, 5, Sizeof.cl_double, Pointer.to(new double[]{vFactor})); // this factor
-		clSetKernelArg(kernel.kernel, 6, Sizeof.cl_double, Pointer.to(new double[]{constant})); // this factor
+		clSetKernelArg(kernel.getKernel(), 0, Sizeof.cl_mem, pointer()); // this
+		clSetKernelArg(kernel.getKernel(), 1, Sizeof.cl_int, Pointer.to(new int[]{thisOffset})); // this offset
+		clSetKernelArg(kernel.getKernel(), 2, Sizeof.cl_double, Pointer.to(new double[]{factor})); // this factor
+		clSetKernelArg(kernel.getKernel(), 3, Sizeof.cl_mem, v.getData().pointer()); // source
+		clSetKernelArg(kernel.getKernel(), 4, Sizeof.cl_int, Pointer.to(new int[]{vOffset+v.getDataOffset()})); // voffset
+		clSetKernelArg(kernel.getKernel(), 5, Sizeof.cl_double, Pointer.to(new double[]{vFactor})); // this factor
+		clSetKernelArg(kernel.getKernel(), 6, Sizeof.cl_double, Pointer.to(new double[]{constant})); // this factor
 		long global_work_size[] = new long[]{length};
-		clEnqueueNDRangeKernel(JoclContext.commandQueue(), kernel.kernel, 1, null,
+		clEnqueueNDRangeKernel(JoclContext.commandQueue(), kernel.getKernel(), 1, null,
 				global_work_size, null, 0, null, null);	
 		
 		return res[0];
@@ -375,15 +375,15 @@ public class JoclVector extends ADenseJoclVector {
 	double dotProduct(int thisOffset,ADenseJoclVector v, int vOffset, int length) {
 		Kernel kernel=Kernels.getKernel("dotProduct");
 		double[] res=new double[1];
-		clSetKernelArg(kernel.kernel, 0, Sizeof.cl_double, Pointer.to(res)); // result
-		clSetKernelArg(kernel.kernel, 1, Sizeof.cl_mem, pointer()); // this
-		clSetKernelArg(kernel.kernel, 2, Sizeof.cl_mem, v.getData().pointer()); // target
-		clSetKernelArg(kernel.kernel, 3, Sizeof.cl_int, Pointer.to(new int[]{thisOffset})); // this offset
-		clSetKernelArg(kernel.kernel, 4, Sizeof.cl_int, Pointer.to(new int[]{vOffset+v.getDataOffset()})); // voffset
-		clSetKernelArg(kernel.kernel, 5, Sizeof.cl_int, Pointer.to(new int[]{length})); // length
-		clSetKernelArg(kernel.kernel, 6, Sizeof.cl_int, Pointer.to(new int[]{1})); // stride
-		clSetKernelArg(kernel.kernel, 7, Sizeof.cl_int, Pointer.to(new int[]{length})); // row step
-		clEnqueueNDRangeKernel(JoclContext.commandQueue(), kernel.kernel, 1, null,
+		clSetKernelArg(kernel.getKernel(), 0, Sizeof.cl_double, Pointer.to(res)); // result
+		clSetKernelArg(kernel.getKernel(), 1, Sizeof.cl_mem, pointer()); // this
+		clSetKernelArg(kernel.getKernel(), 2, Sizeof.cl_mem, v.getData().pointer()); // target
+		clSetKernelArg(kernel.getKernel(), 3, Sizeof.cl_int, Pointer.to(new int[]{thisOffset})); // this offset
+		clSetKernelArg(kernel.getKernel(), 4, Sizeof.cl_int, Pointer.to(new int[]{vOffset+v.getDataOffset()})); // voffset
+		clSetKernelArg(kernel.getKernel(), 5, Sizeof.cl_int, Pointer.to(new int[]{length})); // length
+		clSetKernelArg(kernel.getKernel(), 6, Sizeof.cl_int, Pointer.to(new int[]{1})); // stride
+		clSetKernelArg(kernel.getKernel(), 7, Sizeof.cl_int, Pointer.to(new int[]{length})); // row step
+		clEnqueueNDRangeKernel(JoclContext.commandQueue(), kernel.getKernel(), 1, null,
 				SINGLE_ELEMENT_WORK_SIZE, null, 0, null, null);	
 		
 		return res[0];

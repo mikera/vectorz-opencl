@@ -6,7 +6,7 @@ import static org.jocl.CL.clReleaseKernel;
 import org.jocl.cl_kernel;
 
 public class Kernel {
-	public final cl_kernel kernel;
+	private final cl_kernel kernel;
 	
 	public Kernel(Program program, String name) {
 		this.kernel=clCreateKernel(program.program, name, null);
@@ -14,8 +14,12 @@ public class Kernel {
 
 	@Override
 	public void finalize() throws Throwable {
-		clReleaseKernel(kernel);
+		clReleaseKernel(getKernel());
 		super.finalize();
+	}
+
+	public cl_kernel getKernel() {
+		return kernel;
 	}
 
 }

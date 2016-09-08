@@ -38,7 +38,7 @@ public class CLOpsBenchmark extends SimpleBenchmark {
 		Kernel k=Kernels.getKernel("add");
 		JoclVector v=JoclVector.createLength(10);
 		for (int i=0; i<runs; i++) {
-			CL.clSetKernelArg(k.kernel, 0, Sizeof.cl_mem, v.pointer());
+			CL.clSetKernelArg(k.getKernel(), 0, Sizeof.cl_mem, v.pointer());
 		}
 		result=k.hashCode();
 	}
