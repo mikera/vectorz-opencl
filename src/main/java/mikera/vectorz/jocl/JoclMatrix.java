@@ -1,5 +1,11 @@
 package mikera.vectorz.jocl;
 
+import static org.jocl.CL.clEnqueueNDRangeKernel;
+import static org.jocl.CL.clSetKernelArg;
+
+import org.jocl.Pointer;
+import org.jocl.Sizeof;
+
 import mikera.arrayz.INDArray;
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
@@ -7,6 +13,7 @@ import mikera.matrixx.impl.ARectangularMatrix;
 import mikera.matrixx.impl.IFastRows;
 import mikera.vectorz.Op;
 import mikera.vectorz.Tools;
+import mikera.vectorz.util.ErrorMessages;
 
 @SuppressWarnings("serial")
 public class JoclMatrix extends ARectangularMatrix implements IFastRows {
@@ -126,6 +133,40 @@ public class JoclMatrix extends ARectangularMatrix implements IFastRows {
 		} else {
 			add(JoclMatrix.create(a));
 		}	
+	}
+	
+	@Override
+	public JoclMatrix innerProduct(AMatrix b) {
+		if (b instanceof JoclMatrix) {
+			return innerProduct((JoclMatrix)b);
+		} else {
+			return innerProduct(JoclMatrix.create(b));
+		}
+	}
+	
+	private static final int[] ZERO_INT_ARRAY1=new int[] {0};
+	
+	public JoclMatrix innerProduct(JoclMatrix b) {
+		int n=this.columnCount();
+		if (n!=b.rowCount()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, b));
+		KernelFunction kernel=Kernels.getKernel("dotProduct");
+		int rc=this.rowCount();
+		int cc=b.columnCount();
+		JoclMatrix res=new JoclMatrix(rc,cc);
+		int[] narray=new int[] {n};
+		long[] work_size=new long[] {rc,cc};
+		clSetKernelArg(kernel.getKernel(), 0, Sizeof.cl_double, res.data.pointer()); // result
+		clSetKernelArg(kernel.getKernel(), 1, Sizeof.cl_mem, data.pointer()); // this
+		clSetKernelArg(kernel.getKernel(), 2, Sizeof.cl_mem, b.data.pointer()); // b 
+		clSetKernelArg(kernel.getKernel(), 3, Sizeof.cl_int, Pointer.to(ZERO_INT_ARRAY1)); // this offset
+		clSetKernelArg(kernel.getKernel(), 4, Sizeof.cl_int, Pointer.to(ZERO_INT_ARRAY1)); // b offset
+		clSetKernelArg(kernel.getKernel(), 5, Sizeof.cl_int, Pointer.to(narray)); // common length
+		clSetKernelArg(kernel.getKernel(), 6, Sizeof.cl_int, Pointer.to(new int[]{cc})); // stride for b
+		clSetKernelArg(kernel.getKernel(), 7, Sizeof.cl_int, Pointer.to(narray)); // row step
+		clEnqueueNDRangeKernel(JoclContext.commandQueue(), kernel.getKernel(), 1, null,
+				work_size, null, 0, null, null);	
+		
+		return res;
 	}
 	
 	@Override
