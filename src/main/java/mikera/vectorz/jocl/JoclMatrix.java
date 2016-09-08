@@ -19,7 +19,9 @@ public class JoclMatrix extends ARectangularMatrix implements IFastRows {
 	}
 
 	public static JoclMatrix newMatrix(int rows, int cols) {
-		return new JoclMatrix(rows,cols);
+		JoclMatrix m= new JoclMatrix(rows,cols);
+		m.fill(0.0);
+		return m;
 	}
 	
 	/**
@@ -74,15 +76,20 @@ public class JoclMatrix extends ARectangularMatrix implements IFastRows {
 		return new JoclMatrix(rowCount,columnCount, JoclVector.create(source));
 	}
 
+	/**
+	 * Creates a JoclMatrix with a copy of the source JoclMatrix
+	 * @param a
+	 * @return
+	 */
 	public static JoclMatrix create(JoclMatrix a) {
-		JoclMatrix result= new JoclMatrix(a.rows,a.cols,a.data);
+		JoclMatrix result= new JoclMatrix(a.rows,a.cols,a.data.clone());
 		return result;
 	}
 
 	protected JoclMatrix(int rows, int cols) {
 		super(rows, cols);
 		int n=Tools.toInt(rows*cols);
-		data=JoclVector.createLength(n);
+		data=JoclVector.createUninitialised(n);
 	}
 
 	@Override

@@ -49,7 +49,16 @@ public class JoclVector extends ADenseJoclVector {
 		this(length);
 		setElements(data,offset);
 	}
-
+	
+	/**
+	 * Creates a new uninitialised JoclVector
+	 * Initial values are undefined.
+	 * @param n
+	 * @return
+	 */
+	public static JoclVector createUninitialised(int n) {
+		return new JoclVector(n);
+	}
 	
 	@Override
 	public JoclVector getData() {
