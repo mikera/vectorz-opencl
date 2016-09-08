@@ -1,0 +1,100 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>net.mikera</groupId>
+  <artifactId>vectorz-opencl</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  
+  	<parent>
+		<groupId>net.mikera</groupId>
+		<artifactId>mikera-pom</artifactId>
+		<version>0.6.0</version>
+	</parent>
+	<dependencies>
+		<dependency>
+			<groupId>net.mikera</groupId>
+			<artifactId>vectorz</artifactId>
+			<version>0.63.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>net.mikera</groupId>
+			<artifactId>vectorz</artifactId>
+			<version>0.63.1-SNAPSHOT</version>
+			<type>test-jar</type>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jocl</groupId>
+			<artifactId>jocl</artifactId>
+			<version>2.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.caliper</groupId>
+			<artifactId>caliper</artifactId>
+			<version>0.5-rc1</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<testResources>
+			<testResource>
+				<directory>src/test/clojure</directory>
+			</testResource>
+		</testResources>
+
+		<plugins>
+			<plugin>
+				<groupId>com.theoryinpractise</groupId>
+				<artifactId>clojure-maven-plugin</artifactId>
+				<version>1.7.1</version>
+				<executions>
+					<execution>
+						<id>test-clojure</id>
+						<phase>test</phase>
+						<goals>
+							<goal>test</goal>
+						</goals>
+						<configuration>
+							<sourceDirectories>
+								<sourceDirectory>src/main/clojure</sourceDirectory>
+							</sourceDirectories>
+							<testSourceDirectories>
+								<testSourceDirectory>src/test/clojure</testSourceDirectory>
+							</testSourceDirectories>
+						</configuration>
+					</execution>
+				</executions>
+				<configuration>
+					<sourceDirectories>
+						<sourceDirectory>src/main/clojure</sourceDirectory>
+					</sourceDirectories>
+					<testSourceDirectories>
+						<testSourceDirectory>src/test/clojure</testSourceDirectory>
+					</testSourceDirectories>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+
+
+	<repositories>
+		<repository>
+			<id>clojars.org</id>
+			<name>Clojars repository</name>
+			<url>https://clojars.org/repo</url>
+		</repository>
+	</repositories>
+
+	<distributionManagement>
+		<repository>
+			<id>clojars.org</id>
+			<name>Clojars repository</name>
+			<url>https://clojars.org/repo</url>
+		</repository>
+	</distributionManagement>
+</project>
