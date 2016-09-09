@@ -16,7 +16,7 @@ import mikera.vectorz.Tools;
 import mikera.vectorz.util.ErrorMessages;
 
 @SuppressWarnings("serial")
-public class JoclMatrix extends ARectangularMatrix implements IFastRows {
+public class JoclMatrix extends ARectangularMatrix implements IFastRows, IJoclArray {
 	private final JoclVector data;
 	
 	protected JoclMatrix(int rows, int cols, JoclVector src) {

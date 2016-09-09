@@ -3,7 +3,7 @@ package mikera.vectorz.jocl;
 import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
 
-public class JoclScalar extends AScalar {
+public class JoclScalar extends AScalar implements IJoclArray {
 	private static final long serialVersionUID = 6370756521551217245L;
 
 	private final JoclVector data;

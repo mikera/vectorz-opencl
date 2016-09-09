@@ -14,7 +14,7 @@ import mikera.vectorz.util.DoubleArrays;
  * @author Mike
  *
  */
-public abstract class ADenseJoclVector extends ASizedVector implements IDense {
+public abstract class ADenseJoclVector extends ASizedVector implements IDense, IJoclArray {
 	private static final long serialVersionUID = -6022914163576354860L;
 
 	protected ADenseJoclVector(int length) {
