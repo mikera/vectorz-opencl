@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 
 import org.jocl.Pointer;
 
+import mikera.matrixx.AMatrix;
 import mikera.vectorz.AVector;
 
 /**
@@ -40,6 +41,11 @@ public class JoclUtils {
 	public static ADenseJoclVector coerce(AVector a) {
 		if (a instanceof ADenseJoclVector) return (ADenseJoclVector) a;
 		return JoclVector.create(a);
+	}
+
+	public static JoclMatrix coerce(AMatrix a) {
+		if (a instanceof JoclMatrix) return (JoclMatrix) a;
+		return JoclMatrix.create(a);
 	}
 
 }

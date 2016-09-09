@@ -144,19 +144,36 @@ public class JoclMatrix extends ARectangularMatrix implements IFastRows {
 		}
 	}
 	
+	@Override
+	public void setInnerProduct(INDArray a,INDArray b) {
+		if ((a instanceof AMatrix)&&(b instanceof AMatrix)) {
+			setInnerProduct((AMatrix)a,(AMatrix)b);
+		} 
+		super.setInnerProduct(a, b);
+	}
+	
+	public void setInnerProduct(AMatrix a,AMatrix b) {
+		setInnerProduct(JoclUtils.coerce(a),JoclUtils.coerce(b));
+	}
+	
 	private static final int[] ZERO_INT_ARRAY1=new int[] {0};
 	
 	public JoclMatrix innerProduct(JoclMatrix b) {
-		int n=this.columnCount();
+		JoclMatrix result=new JoclMatrix(rowCount(),b.columnCount());
+		result.setInnerProduct(this,b);
+		return result;
+	}
+	
+	public void setInnerProduct(JoclMatrix a, JoclMatrix b) {
+		int n=a.columnCount(); // number of columns in a, i.e. the number of multiplications per output element
 		if (n!=b.rowCount()) throw new IllegalArgumentException(ErrorMessages.incompatibleShapes(this, b));
 		KernelFunction kernel=Kernels.getKernel("dotProduct");
-		int rc=this.rowCount();
+		int rc=a.rowCount();
 		int cc=b.columnCount();
-		JoclMatrix res=new JoclMatrix(rc,cc);
 		int[] narray=new int[] {n};
 		long[] work_size=new long[] {rc,cc};
-		clSetKernelArg(kernel.getKernel(), 0, Sizeof.cl_double, res.data.pointer()); // result
-		clSetKernelArg(kernel.getKernel(), 1, Sizeof.cl_mem, data.pointer()); // this
+		clSetKernelArg(kernel.getKernel(), 0, Sizeof.cl_double, data.pointer()); // result
+		clSetKernelArg(kernel.getKernel(), 1, Sizeof.cl_mem, a.data.pointer()); // this
 		clSetKernelArg(kernel.getKernel(), 2, Sizeof.cl_mem, b.data.pointer()); // b 
 		clSetKernelArg(kernel.getKernel(), 3, Sizeof.cl_int, Pointer.to(ZERO_INT_ARRAY1)); // this offset
 		clSetKernelArg(kernel.getKernel(), 4, Sizeof.cl_int, Pointer.to(ZERO_INT_ARRAY1)); // b offset
@@ -165,8 +182,7 @@ public class JoclMatrix extends ARectangularMatrix implements IFastRows {
 		clSetKernelArg(kernel.getKernel(), 7, Sizeof.cl_int, Pointer.to(narray)); // row step
 		clEnqueueNDRangeKernel(JoclContext.commandQueue(), kernel.getKernel(), 1, null,
 				work_size, null, 0, null, null);	
-		
-		return res;
+
 	}
 	
 	@Override
