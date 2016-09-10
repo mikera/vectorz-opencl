@@ -8,7 +8,9 @@ import java.nio.file.Paths;
 import org.jocl.Pointer;
 
 import mikera.matrixx.AMatrix;
+import mikera.matrixx.Matrix;
 import mikera.vectorz.AVector;
+import mikera.vectorz.impl.Vector0;
 
 /**
  * Utility function class for vectorz-opencl
@@ -42,10 +44,28 @@ public class JoclUtils {
 		if (a instanceof ADenseJoclVector) return (ADenseJoclVector) a;
 		return JoclVector.create(a);
 	}
+	
 
 	public static JoclMatrix coerce(AMatrix a) {
 		if (a instanceof JoclMatrix) return (JoclMatrix) a;
 		return JoclMatrix.create(a);
 	}
+	
+	public static AVector createVector(int length) {
+		if (length==0) {
+			return Vector0.INSTANCE;
+		} else {
+			return JoclVector.createLength(length);
+		}
+	}
+	
+	public static AMatrix createMatrix(int rows, int cols) {
+		if ((rows==0)||(cols==0)) {
+			return Matrix.create(rows, cols);
+		} else {
+			return JoclMatrix.newMatrix(rows, cols);
+		}
+	}
+
 
 }

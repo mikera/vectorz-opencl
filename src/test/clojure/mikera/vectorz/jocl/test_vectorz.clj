@@ -1,6 +1,7 @@
 (ns mikera.vectorz.jocl.test-vectorz
   (:use [clojure.core matrix]
         [clojure.test])
+  (:require [mikera.vectorz.opencl-api])
   (:require [clojure.core.matrix.compliance-tester :as compl])
   ;; (:require [criterium.core :as c])
   )
@@ -12,7 +13,7 @@
   (mikera.vectorz.jocl.JoclVector/createLength (int m)))
 
 
-(set-current-implementation :vectorz)
+(set-current-implementation :vectorz-opencl)
 
 (deftest test-joclmatrix-instance
   (compl/instance-test (joclmatrix 3 3)))
@@ -24,8 +25,8 @@
   (let [src (joclvector 4)]
     (compl/instance-test (subvector src 1 2))))
 
-(deftest compliance-test
-  (compl/compliance-test (joclmatrix 3 3)))
+;(deftest compliance-test
+;  (compl/compliance-test (joclmatrix 3 3)))
 
 (comment 
   (let [size 3
