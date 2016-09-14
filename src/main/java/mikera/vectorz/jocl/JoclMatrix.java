@@ -11,6 +11,7 @@ import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import mikera.matrixx.impl.ARectangularMatrix;
 import mikera.matrixx.impl.IFastRows;
+import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
 import mikera.vectorz.Tools;
 import mikera.vectorz.util.ErrorMessages;
@@ -184,6 +185,28 @@ public class JoclMatrix extends ARectangularMatrix implements IFastRows, IJoclAr
 				work_size, null, 0, null, null);	
 
 	}
+
+	@Override
+	public void addOuterProduct(AVector a, AVector b) {
+		addOuterProduct(JoclUtils.coerce(a),JoclUtils.coerce(b));
+	}
+	
+	public void addOuterProduct(ADenseJoclVector a, ADenseJoclVector b) {
+		checkShape(a.length(),b.length());
+		KernelFunction kernel=Kernels.getKernel("addOuterProduct");
+		int[] narray=new int[] {cols,a.getDataOffset(),b.getDataOffset()};
+		Pointer nap=Pointer.to(narray);
+		long[] work_size=new long[] {rows}; // each work unit is one row of this matrix
+		clSetKernelArg(kernel.getKernel(), 0, Sizeof.cl_double, data.pointer()); // result
+		clSetKernelArg(kernel.getKernel(), 1, Sizeof.cl_mem, a.getData().pointer()); // this
+		clSetKernelArg(kernel.getKernel(), 2, Sizeof.cl_mem, b.getData().pointer()); // b 
+		clSetKernelArg(kernel.getKernel(), 3, Sizeof.cl_int, nap.withByteOffset(1*Sizeof.cl_int)); // a offset
+		clSetKernelArg(kernel.getKernel(), 4, Sizeof.cl_int, nap.withByteOffset(2*Sizeof.cl_int)); // b offset
+		clSetKernelArg(kernel.getKernel(), 5, Sizeof.cl_int, nap); // n = length of row
+		clSetKernelArg(kernel.getKernel(), 6, Sizeof.cl_int, nap); // row step
+		clEnqueueNDRangeKernel(JoclContext.commandQueue(), kernel.getKernel(), 1, null,
+				work_size, null, 0, null, null);	
+	}
 	
 	@Override
 	public void copyRowTo(int i, double[] dest, int destOffset) {
@@ -205,6 +228,7 @@ public class JoclMatrix extends ARectangularMatrix implements IFastRows, IJoclAr
 	public JoclVector asVector() {
 		return data;
 	}
+	
 	
 	@Override
 	public void setElements(double[] source, int offset) {

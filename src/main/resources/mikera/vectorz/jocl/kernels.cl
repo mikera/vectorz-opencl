@@ -65,3 +65,12 @@ dotProduct(__global double *res, __global const double *a, __global const double
 	}
 	res[row*n+col]=acc;
 }
+
+__kernel void 
+addOuterProduct(__global double *res, __global const double *a, __global const double *b, const int aoffset, const int boffset, const int n, const int step)
+{
+	int row=get_global_id(0);
+	for(int i = 0; i < n; i++) {
+		res[row*step+i]+=a[aoffset+row]*b[boffset+i];
+	}
+}
