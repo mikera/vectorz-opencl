@@ -17,8 +17,12 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.impl.Vector0;
 
 /**
- * Class to wrap OpenCL device memory as Vectorz vector.
- * Other vectorz-opencl classes should use this for underlying storage 
+ * Main dense, fully packed OpenCL vector class.
+ * 
+ * This is the fastest class for vectorz-opencl vector operations.
+ * 
+ * This class wraps OpenCL device memory as Vectorz vector.
+ * Other vectorz-opencl classes use this for underlying storage 
  * 
  * Automatically frees memory object on finalise.
  * 

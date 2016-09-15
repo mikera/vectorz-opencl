@@ -16,6 +16,13 @@ import mikera.vectorz.Op;
 import mikera.vectorz.Tools;
 import mikera.vectorz.util.ErrorMessages;
 
+/**
+ * A Dense Matrix class backed by OpenCL GPU memory.
+ * 
+ * Intended as the main container for fast GPU matrix operations.
+ * @author Mike
+ *
+ */
 @SuppressWarnings("serial")
 public class JoclMatrix extends ARectangularMatrix implements IFastRows, IJoclArray {
 	private final JoclVector data;
@@ -228,7 +235,6 @@ public class JoclMatrix extends ARectangularMatrix implements IFastRows, IJoclAr
 	public JoclVector asVector() {
 		return data;
 	}
-	
 	
 	@Override
 	public void setElements(double[] source, int offset) {
