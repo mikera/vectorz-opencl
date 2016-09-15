@@ -5,7 +5,6 @@ import java.util.Iterator;
 import mikera.arrayz.impl.IDense;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Op;
-import mikera.vectorz.impl.ASizedVector;
 import mikera.vectorz.impl.IndexedElementVisitor;
 import mikera.vectorz.util.DoubleArrays;
 
@@ -14,16 +13,17 @@ import mikera.vectorz.util.DoubleArrays;
  * @author Mike
  *
  */
-public abstract class ADenseJoclVector extends ASizedVector implements IDense, IJoclArray {
+public abstract class ADenseJoclVector extends AStridedJoclVector implements IDense, IJoclArray {
 	private static final long serialVersionUID = -6022914163576354860L;
 
 	protected ADenseJoclVector(int length) {
 		super(length);
 	}
-
-	public abstract JoclVector getData();
 	
-	public abstract int getDataOffset();
+	@Override
+	public final int getStride() {
+		return 1;
+	}
 	
 	public JoclSubVector asJoclSubVector() {
 		if (this instanceof JoclSubVector) {
