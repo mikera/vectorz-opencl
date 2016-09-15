@@ -25,6 +25,12 @@ public abstract class ADenseJoclVector extends AStridedJoclVector implements IDe
 		return 1;
 	}
 	
+	/**
+	 * Coerces this vector to a JoclSubVector. 
+	 * 
+	 * May return the same object if it ias already a JoclSubVector
+	 * @return
+	 */
 	public JoclSubVector asJoclSubVector() {
 		if (this instanceof JoclSubVector) {
 			return (JoclSubVector)this;
@@ -35,6 +41,7 @@ public abstract class ADenseJoclVector extends AStridedJoclVector implements IDe
 	
 	@Override
 	public Iterator<Double> iterator() {
+		// Convert to Java data in order to have an efficient iterator.
 		return toVector().iterator();
 	}
 	

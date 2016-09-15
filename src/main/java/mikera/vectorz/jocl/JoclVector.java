@@ -339,7 +339,6 @@ public class JoclVector extends ADenseJoclVector {
 				global_work_size, null, 0, null, null);	
 	}
 
-
 	public Pointer pointer() {
 		return Pointer.to(mem);
 	}
