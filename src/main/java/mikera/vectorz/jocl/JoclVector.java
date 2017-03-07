@@ -116,7 +116,7 @@ public class JoclVector extends ADenseJoclVector {
 	}
 	
 	void setElements(int offset, ADenseJoclVector src, int srcOffset,int length) {
-		CL.clEnqueueCopyBuffer(JoclContext.commandQueue(),src.getData().mem,this.mem,offset*Sizeof.cl_double,(srcOffset+src.getDataOffset())*Sizeof.cl_double,length*Sizeof.cl_double,0,null,null);
+		CL.clEnqueueCopyBuffer(JoclContext.commandQueue(),src.getData().mem,this.mem,(srcOffset+src.getDataOffset())*Sizeof.cl_double,offset*Sizeof.cl_double,length*Sizeof.cl_double,0,null,null);
 	}
 	
 	@Override

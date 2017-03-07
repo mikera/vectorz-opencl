@@ -8,6 +8,10 @@ import mikera.vectorz.util.DoubleArrays;
 @SuppressWarnings("serial")
 public class JoclSubVector extends ADenseJoclVector {
 	private final JoclVector data;
+	
+	/**
+	 * The offset of this subvector into the underlying JoclVector.
+	 */
 	private final int offset;
 
 	public static JoclSubVector newVector(int length) {
