@@ -5,6 +5,12 @@ import mikera.vectorz.AVector;
 import mikera.vectorz.impl.Vector0;
 import mikera.vectorz.util.DoubleArrays;
 
+/**
+ * Vector class wrapping an ranged subset of GPU data.
+ * 
+ * @author Mike
+ *
+ */
 @SuppressWarnings("serial")
 public class JoclSubVector extends ADenseJoclVector {
 	private final JoclVector data;

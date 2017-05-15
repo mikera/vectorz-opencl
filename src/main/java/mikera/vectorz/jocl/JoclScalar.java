@@ -3,6 +3,13 @@ package mikera.vectorz.jocl;
 import mikera.vectorz.AScalar;
 import mikera.vectorz.AVector;
 
+/**
+ * A scalar array class representing an index into GPU data.
+ * 
+ * For performance reasons, use of this class should be avoided: it is provided mainly for compatibility purposes
+ * @author Mike
+ *
+ */
 public class JoclScalar extends AScalar implements IJoclArray {
 	private static final long serialVersionUID = 6370756521551217245L;
 
