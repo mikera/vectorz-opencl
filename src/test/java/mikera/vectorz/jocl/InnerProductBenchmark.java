@@ -21,7 +21,7 @@ import com.google.caliper.SimpleBenchmark;
 public class InnerProductBenchmark extends SimpleBenchmark {
 	public double result;
 	
-	int DIM_SIZE=256;
+	int DIM_SIZE=512;
 
 	public void timeMmulJocl(int runs) {
 		JoclMatrix m=JoclMatrix.newMatrix(DIM_SIZE,DIM_SIZE);
